@@ -4,6 +4,7 @@ import com.project.yogerOrder.order.entity.OrderEntity;
 import com.project.yogerOrder.order.service.OrderService;
 import com.project.yogerOrder.payment.dto.request.ConfirmPaymentRequestDTO;
 import com.project.yogerOrder.payment.dto.request.PartialRefundRequestDTO;
+import com.project.yogerOrder.payment.dto.request.PartialRefundRequestDTOs;
 import com.project.yogerOrder.payment.dto.request.VerifyPaymentRequestDTO;
 import com.project.yogerOrder.payment.dto.response.PaymentOrderDTO;
 import com.project.yogerOrder.payment.entity.PaymentEntity;
@@ -15,7 +16,6 @@ import com.project.yogerOrder.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -68,8 +68,12 @@ public class PaymentService {
         ));
     }
 
-    @Transactional
-    public void productExpiration(Long productId, PartialRefundRequestDTO partialRefundRequestDTO) {
+    public void productsExpiration(PartialRefundRequestDTOs partialRefundRequestDTOs) {
+        partialRefundRequestDTOs.partialRefundRequestDTOs().forEach(this::expirationRefundPerProduct);
+    }
+
+    private void expirationRefundPerProduct(PartialRefundRequestDTO partialRefundRequestDTO) {
+        Long productId = partialRefundRequestDTO.productId();
         for (PaymentOrderDTO paymentOrderDTO : paymentRepository.findAllPaymentAndOrderByProductId(productId)) {
             PaymentEntity payment = paymentOrderDTO.payment();
             OrderEntity order = paymentOrderDTO.order();

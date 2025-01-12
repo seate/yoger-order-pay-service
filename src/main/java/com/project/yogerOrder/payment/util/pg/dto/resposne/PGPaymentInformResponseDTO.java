@@ -15,7 +15,7 @@ public record PGPaymentInformResponseDTO(@NotBlank String pgPaymentId,
                 payment.getImpUid(),
                 payment.getMerchantUid(),
                 payment.getAmount().intValue(),
-                PGState.valueOf(payment.getStatus())
+                PGState.match(payment.getStatus())
         );
     }
 

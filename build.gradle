@@ -31,18 +31,23 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	// Security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// DB
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly 'com.mysql:mysql-connector-j:9.+'
+
+	// MQ
+	implementation 'org.springframework.kafka:spring-kafka'
 
 	// Util
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	// Shedlock
+	implementation 'net.javacrumbs.shedlock:shedlock-spring:6.0.2'
+	implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:6.0.2'
  	// custom yoger
-	implementation 'com.github.inha-2024-capstone:yoger-library:v0.3.0'
+	implementation 'com.github.inha-2024-capstone:yoger-library:v0.4.0'
 
 	// Payment
 	implementation 'com.github.iamport:iamport-rest-client-java:0.2.23'
@@ -68,15 +73,6 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-processResources {
-	def activeProfile = System.getProperty("spring.profiles.active", "")
-
-	if (activeProfile == "prod") {
-		exclude("application*.yml")
-		include("application-prod.yml")
-	}
-}
-
 bootBuildImage {
-	imageName = "sa20207/yoger_order:latest"
+	imageName = "sa20207/yoger_order"
 }

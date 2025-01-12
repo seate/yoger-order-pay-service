@@ -1,6 +1,6 @@
 package com.project.yogerOrder.payment.controller;
 
-import com.project.yogerOrder.payment.dto.request.PartialRefundRequestDTO;
+import com.project.yogerOrder.payment.dto.request.PartialRefundRequestDTOs;
 import com.project.yogerOrder.payment.dto.request.PortOnePaymentWebhookRequestDTO;
 import com.project.yogerOrder.payment.dto.request.VerifyPaymentRequestDTO;
 import com.project.yogerOrder.payment.service.PaymentService;
@@ -24,10 +24,9 @@ public class PaymentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/products/{productId}/expire")
-    public ResponseEntity<Void> productExpired(@PathVariable("productId") Long productId,
-                                               @RequestBody @Valid PartialRefundRequestDTO partialRefundRequestDTO) {
-        paymentService.productExpiration(productId, partialRefundRequestDTO);
+    @PostMapping("/products/expire")
+    public ResponseEntity<Void> productExpired(@RequestBody @Valid PartialRefundRequestDTOs partialRefundRequestDTOs) {
+        paymentService.productsExpiration(partialRefundRequestDTOs);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
