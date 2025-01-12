@@ -137,7 +137,7 @@ class PaymentServiceTest {
 
         // then
         verify(pgClientService, times(0)).refund(any(PGRefundRequestDTO.class));
-        verify(paymentTransactionService).confirmPaymentAndOrder(captor.capture());
+        verify(paymentTransactionService).confirmPayment(captor.capture());
 
         ConfirmPaymentRequestDTO confirmPaymentRequestDTO = captor.getValue();
         assertEquals(confirmPaymentRequestDTO.pgPaymentId(), source1.pgInform.pgPaymentId());
@@ -159,7 +159,7 @@ class PaymentServiceTest {
         verify(orderService, times(0)).findById(any());
         verify(productService, times(0)).findById(any());
         verify(pgClientService, times(0)).refund(any(PGRefundRequestDTO.class));
-        verify(paymentTransactionService, times(0)).confirmPaymentAndOrder(any(ConfirmPaymentRequestDTO.class));
+        verify(paymentTransactionService, times(0)).confirmPayment(any(ConfirmPaymentRequestDTO.class));
     }
 
     @ParameterizedTest
@@ -177,7 +177,7 @@ class PaymentServiceTest {
         verify(orderService, times(0)).findById(any());
         verify(productService, times(0)).findById(any());
         verify(pgClientService, times(0)).refund(any(PGRefundRequestDTO.class));
-        verify(paymentTransactionService, times(0)).confirmPaymentAndOrder(any(ConfirmPaymentRequestDTO.class));
+        verify(paymentTransactionService, times(0)).confirmPayment(any(ConfirmPaymentRequestDTO.class));
     }
 
     private static Stream<Arguments> verifyFailByStateSource() {
@@ -210,7 +210,7 @@ class PaymentServiceTest {
         Assertions.assertThat(captor.getValue().paymentId()).isEqualTo(source1.pgInform.pgPaymentId());
         Assertions.assertThat(captor.getValue().checksum()).isEqualTo(invalidPGInform.amount());
         Assertions.assertThat(captor.getValue().refundAmount()).isEqualTo(invalidPGInform.amount());
-        verify(paymentTransactionService, times(0)).confirmPaymentAndOrder(any(ConfirmPaymentRequestDTO.class));
+        verify(paymentTransactionService, times(0)).confirmPayment(any(ConfirmPaymentRequestDTO.class));
     }
 
     @Test
