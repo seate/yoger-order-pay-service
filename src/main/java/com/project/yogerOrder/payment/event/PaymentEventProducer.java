@@ -36,15 +36,15 @@ public class PaymentEventProducer {
     }
 
     private void sendPaymentCompletedEvent(PaymentEntity paymentEntity) {
-        paymentOutboxService.saveOutbox(paymentEntity.getState().toString(), PaymentCompletedEvent.from(paymentEntity));
+        paymentOutboxService.saveOutbox(paymentEntity.getState().toString().toLowerCase(), PaymentCompletedEvent.from(paymentEntity));
     }
 
     private void sendPaymentCanceledEvent(PaymentEntity paymentEntity) {
-        paymentOutboxService.saveOutbox(paymentEntity.getState().toString(), PaymentCanceledEvent.from(paymentEntity));
+        paymentOutboxService.saveOutbox(paymentEntity.getState().toString().toLowerCase(), PaymentCanceledEvent.from(paymentEntity));
     }
 
     private void sendPaymentErroredEvent(PaymentEntity paymentEntity) {
-        paymentOutboxService.saveOutbox(paymentEntity.getState().toString(), PaymentErroredEvent.from(paymentEntity));
+        paymentOutboxService.saveOutbox(paymentEntity.getState().toString().toLowerCase(), PaymentErroredEvent.from(paymentEntity));
     }
 
 }
