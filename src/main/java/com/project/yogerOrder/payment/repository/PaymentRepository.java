@@ -8,11 +8,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
     boolean existsByPgPaymentId(String pgPaymentId);
+
+    Optional<PaymentEntity> findByOrderId(Long orderId);
 
     //*
     //@Query("SELECT p, o FROM PaymentEntity p WHERE p.orderId IN (SELECT o.id FROM OrderEntity o WHERE o.productId = :productId)")
