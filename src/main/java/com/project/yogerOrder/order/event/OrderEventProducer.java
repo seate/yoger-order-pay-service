@@ -1,34 +1,17 @@
 package com.project.yogerOrder.order.event;
 
-import com.project.yogerOrder.order.config.OrderTopic;
 import com.project.yogerOrder.order.entity.OrderEntity;
 import com.project.yogerOrder.order.entity.OrderState;
+import com.project.yogerOrder.order.event.outbox.service.OrderOutboxService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class OrderEventProducer {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final OrderOutboxService orderOutboxService;
 
-
-    public void sendOrderCreatedEvent(OrderEntity orderEntity) {
-        kafkaTemplate.send(OrderTopic.CREATED, OrderCreatedEvent.from(orderEntity));
-    }
-
-    public void sendOrderCanceledEvent(OrderEntity orderEntity) {
-        kafkaTemplate.send(OrderTopic.CANCELED, OrderCanceledEvent.from(orderEntity));
-    }
-
-    public void sendOrderCompletedEvent(OrderEntity orderEntity) {
-        kafkaTemplate.send(OrderTopic.COMPLETED, OrderCompletedEvent.from(orderEntity));
-    }
-
-    public void sendOrderErroredEvent(OrderEntity orderEntity) {
-        kafkaTemplate.send(OrderTopic.ERRORED, OrderErroredEvent.from(orderEntity));
-    }
 
     public void sendEventByState(OrderEntity orderEntity) {
         if (orderEntity.getState() == OrderState.COMPLETED) {
@@ -41,5 +24,21 @@ public class OrderEventProducer {
             sendOrderCanceledEvent(orderEntity);
             sendOrderErroredEvent(orderEntity);
         }
+    }
+
+    private void sendOrderCreatedEvent(OrderEntity orderEntity) {
+        orderOutboxService.saveOutbox(orderEntity.getState().toString(), OrderCreatedEvent.from(orderEntity));
+    }
+
+    private void sendOrderCanceledEvent(OrderEntity orderEntity) {
+        orderOutboxService.saveOutbox(orderEntity.getState().toString(), OrderCanceledEvent.from(orderEntity));
+    }
+
+    private void sendOrderCompletedEvent(OrderEntity orderEntity) {
+        orderOutboxService.saveOutbox(orderEntity.getState().toString(), OrderCompletedEvent.from(orderEntity));
+    }
+
+    private void sendOrderErroredEvent(OrderEntity orderEntity) {
+        orderOutboxService.saveOutbox(orderEntity.getState().toString(), OrderErroredEvent.from(orderEntity));
     }
 }
