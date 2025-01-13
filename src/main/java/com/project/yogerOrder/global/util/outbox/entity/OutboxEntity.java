@@ -27,10 +27,9 @@ public abstract class OutboxEntity {
     private LocalDateTime occurrenceTime;
 
 
-    protected OutboxEntity(String eventType, Object payload) {
+    protected OutboxEntity(String eventType, String payload) {
         this.eventId = UUID.randomUUID().toString();
         this.eventType = eventType;
-        this.payload = payload.toString();
-        this.occurrenceTime = LocalDateTime.now();
+        this.payload = payload;
     }
 }

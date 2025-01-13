@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderOutboxEntity extends OutboxEntity {
 
-    public OrderOutboxEntity(String eventType, Object payload) {
+    public OrderOutboxEntity(String eventType, String payload) {
         super(eventType, payload);
     }
 }

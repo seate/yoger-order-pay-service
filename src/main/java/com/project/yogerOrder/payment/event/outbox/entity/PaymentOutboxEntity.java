@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentOutboxEntity extends OutboxEntity {
 
-    public PaymentOutboxEntity(String eventType, Object payload) {
+    public PaymentOutboxEntity(String eventType, String payload) {
         super(eventType, payload);
     }
 }
