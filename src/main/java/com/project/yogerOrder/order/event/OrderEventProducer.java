@@ -27,18 +27,18 @@ public class OrderEventProducer {
     }
 
     private void sendOrderCreatedEvent(OrderEntity orderEntity) {
-        orderOutboxService.saveOutbox(orderEntity.getState().toString(), OrderCreatedEvent.from(orderEntity));
+        orderOutboxService.saveOutbox(orderEntity.getState().toString().toLowerCase(), OrderCreatedEvent.from(orderEntity));
     }
 
     private void sendOrderCanceledEvent(OrderEntity orderEntity) {
-        orderOutboxService.saveOutbox(orderEntity.getState().toString(), OrderCanceledEvent.from(orderEntity));
+        orderOutboxService.saveOutbox(orderEntity.getState().toString().toLowerCase(), OrderCanceledEvent.from(orderEntity));
     }
 
     private void sendOrderCompletedEvent(OrderEntity orderEntity) {
-        orderOutboxService.saveOutbox(orderEntity.getState().toString(), OrderCompletedEvent.from(orderEntity));
+        orderOutboxService.saveOutbox(orderEntity.getState().toString().toLowerCase(), OrderCompletedEvent.from(orderEntity));
     }
 
     private void sendOrderErroredEvent(OrderEntity orderEntity) {
-        orderOutboxService.saveOutbox(orderEntity.getState().toString(), OrderErroredEvent.from(orderEntity));
+        orderOutboxService.saveOutbox(orderEntity.getState().toString().toLowerCase(), OrderErroredEvent.from(orderEntity));
     }
 }

@@ -1,11 +1,10 @@
 package com.project.yogerOrder.payment.event;
 
 
-import com.project.yogerOrder.payment.config.PaymentTopic;
 import com.project.yogerOrder.payment.entity.PaymentEntity;
+import com.project.yogerOrder.payment.event.outbox.service.PaymentOutboxService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PaymentEventProducer {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final PaymentOutboxService paymentOutboxService;
 
     public void sendEventByState(PaymentEntity paymentEntity) {
         switch (paymentEntity.getState()) {
@@ -37,15 +36,15 @@ public class PaymentEventProducer {
     }
 
     private void sendPaymentCompletedEvent(PaymentEntity paymentEntity) {
-        kafkaTemplate.send(PaymentTopic.COMPLETED, PaymentCompletedEvent.from(paymentEntity));
+        paymentOutboxService.saveOutbox(paymentEntity.getState().toString().toLowerCase(), PaymentCompletedEvent.from(paymentEntity));
     }
 
     private void sendPaymentCanceledEvent(PaymentEntity paymentEntity) {
-        kafkaTemplate.send(PaymentTopic.CANCELED, PaymentCanceledEvent.from(paymentEntity));
+        paymentOutboxService.saveOutbox(paymentEntity.getState().toString().toLowerCase(), PaymentCanceledEvent.from(paymentEntity));
     }
 
     private void sendPaymentErroredEvent(PaymentEntity paymentEntity) {
-        kafkaTemplate.send(PaymentTopic.ERRORED, PaymentErroredEvent.from(paymentEntity));
+        paymentOutboxService.saveOutbox(paymentEntity.getState().toString().toLowerCase(), PaymentErroredEvent.from(paymentEntity));
     }
 
 }
