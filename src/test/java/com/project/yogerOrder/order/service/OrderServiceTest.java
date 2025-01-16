@@ -100,11 +100,11 @@ class OrderServiceTest {
 
     private static Stream<Arguments> notPayableSource() {
         return Stream.of(
-                Arguments.of(OrderState.PENDING, 4, true),
+                Arguments.of(OrderState.CREATED, 4, true),
                 Arguments.of(OrderState.ERROR, 4, false),
-                Arguments.of(OrderState.REJECTED, 4, false),
-                Arguments.of(OrderState.APPROVED, 4, false),
-                Arguments.of(OrderState.PENDING, 6, false)
+                Arguments.of(OrderState.CANCELED, 4, false),
+                Arguments.of(OrderState.COMPLETED, 4, false),
+                Arguments.of(OrderState.CREATED, 6, false)
         );
     }
 }

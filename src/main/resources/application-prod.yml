@@ -16,6 +16,10 @@ spring:
             hibernate:
                 format_sql: true
 
+    threads:
+        virtual:
+            enabled: true
+
 portOne:
     v1:
         APIKey: ${V1_APIKEY}
@@ -27,7 +31,7 @@ product:
     url: "http://product-cluster:8080/api/products"
 
 order:
-    valid-time: 1
+    valid-time: 5
     cron:
         expiration: '0 0/1 * * * *'
 
@@ -46,3 +50,16 @@ management:
     metrics:
         enable:
             jvm: true
+
+kafka:
+    admin:
+        bootstrap-servers: kafka.confluent.svc.cluster.local:9092
+    producer:
+        bootstrap-servers: kafka.confluent.svc.cluster.local:9092
+        enable-idempotence: true
+        transaction-id-prefix: tx-
+    consumer:
+        bootstrap-servers: kafka.confluent.svc.cluster.local:9092
+        auto-offset-reset: earliest
+        enable-auto-commit: false
+        isolation-level: read_committed
