@@ -1,6 +1,7 @@
 package com.project.yogerOrder.order.event;
 
 import com.project.yogerOrder.order.entity.OrderEntity;
+import com.project.yogerOrder.order.entity.OrderState;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -10,15 +11,20 @@ import java.util.UUID;
 public record OrderCanceledEvent(@NotNull Long orderId, @NotBlank String eventId, @NotNull OrderEventType eventType,
                                  @NotNull OrderCanceledData data, @NotNull LocalDateTime occurrenceTime) {
 
-    private record OrderCanceledData(@NotNull Long userId, @NotNull Long productId, @NotNull Integer orderQuantity) {
+    private record OrderCanceledData(@NotNull Long userId, @NotNull Long productId, @NotNull Integer orderQuantity, @NotNull Boolean stockOccupied) {
     }
 
     public static OrderCanceledEvent from(OrderEntity orderEntity) {
         return new OrderCanceledEvent(
                 orderEntity.getId(),
                 UUID.randomUUID().toString(),
-                com.project.yogerOrder.order.event.OrderEventType.CANCELED,
-                new OrderCanceledData(orderEntity.getBuyerId(), orderEntity.getProductId(), orderEntity.getQuantity()),
+                OrderEventType.CANCELED,
+                new OrderCanceledData(
+                        orderEntity.getBuyerId(),
+                        orderEntity.getProductId(),
+                        orderEntity.getQuantity(),
+                        OrderState.isStockOccupied(orderEntity.getState())
+                ),
                 LocalDateTime.now()
         );
     }

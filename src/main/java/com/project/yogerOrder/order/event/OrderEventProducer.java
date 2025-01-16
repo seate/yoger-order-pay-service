@@ -41,4 +41,8 @@ public class OrderEventProducer {
     private void sendOrderErroredEvent(OrderEntity orderEntity) {
         orderOutboxService.saveOutbox(orderEntity.getState().toString().toLowerCase(), OrderErroredEvent.from(orderEntity));
     }
+
+    public void sendOrderDeductionAfterCanceledEvent(OrderEntity orderEntity) {
+        //TODO : send event
+    }
 }

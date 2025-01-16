@@ -8,4 +8,9 @@ public enum OrderState {
     public static List<OrderState> getPayableStates() {
         return List.of(CREATED, STOCK_CONFIRMED);
     }
+
+    public static Boolean isStockOccupied(OrderState state) {
+        return state == STOCK_CONFIRMED || state == COMPLETED;
+    }
+
 }

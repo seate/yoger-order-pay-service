@@ -76,6 +76,12 @@ public class OrderService {
     @Transactional
     public void updateByDeductionSuccess(Long orderId) {
         OrderEntity orderEntity = findById(orderId);
+
+        if (orderEntity.getState() == OrderState.CANCELED) {
+            orderEventProducer.sendOrderDeductionAfterCanceledEvent(orderEntity);
+            return;
+        }
+
         Boolean isUpdated = orderEntity.stockConfirmed();
         if (!isUpdated) {
             log.debug("Order is already completed. orderId: {}", orderEntity.getId());
