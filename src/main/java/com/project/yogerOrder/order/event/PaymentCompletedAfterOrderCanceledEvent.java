@@ -7,14 +7,14 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record OrderDeductionAfterCanceledEvent(@NotNull Long orderId, @NotBlank String eventId,
-                                               @NotNull OrderDeductionAfterCanceledData data, @NotNull LocalDateTime occurrenceTime) {
+public record PaymentCompletedAfterOrderCanceledEvent(@NotNull Long orderId, @NotBlank String eventId,
+                                                      @NotNull OrderDeductionAfterCanceledData data, @NotNull LocalDateTime occurrenceTime) {
 
     private record OrderDeductionAfterCanceledData(@NotNull Long userId, @NotNull Long productId, @NotNull Integer orderQuantity) {
     }
 
-    public static OrderDeductionAfterCanceledEvent from(OrderEntity orderEntity) {
-        return new OrderDeductionAfterCanceledEvent(
+    public static PaymentCompletedAfterOrderCanceledEvent from(OrderEntity orderEntity) {
+        return new PaymentCompletedAfterOrderCanceledEvent(
                 orderEntity.getId(),
                 UUID.randomUUID().toString(),
                 new OrderDeductionAfterCanceledData(
