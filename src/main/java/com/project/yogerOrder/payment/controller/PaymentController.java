@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,9 @@ public class PaymentController {
 
     @KafkaListener(topics = OrderTopic.CANCELED, groupId = "payment-group",
             containerFactory = "orderCanceledFactory")
-    public void orderCanceled(OrderCanceledEvent event) {
+    public void orderCanceled(OrderCanceledEvent event, Acknowledgment acknowledgment) {
         paymentService.orderCanceled(event.orderId());
+
+        acknowledgment.acknowledge();
     }
 }

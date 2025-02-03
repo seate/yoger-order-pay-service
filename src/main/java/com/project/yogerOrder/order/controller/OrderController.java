@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,26 +49,34 @@ public class OrderController {
 
     @KafkaListener(topics = ProductTopic.DEDUCTION_COMPLETED, groupId = "order-group",
             containerFactory = "productDeductionCompletedFactory")
-    public void productDeductionCompleted(ProductDeductionCompletedEvent event) {
+    public void productDeductionCompleted(ProductDeductionCompletedEvent event, Acknowledgment acknowledgment) {
         orderService.updateByDeductionSuccess(event.data().orderId());
+
+        acknowledgment.acknowledge();
     }
 
     @KafkaListener(topics = ProductTopic.DEDUCTION_FAILED, groupId = "order-group",
             containerFactory = "productDeductionFailedFactory")
-    public void productDeductionFailed(ProductDeductionFailedEvent event) {
+    public void productDeductionFailed(ProductDeductionFailedEvent event, Acknowledgment acknowledgment) {
         orderService.updateByDeductionFail(event.data().orderId());
+
+        acknowledgment.acknowledge();
     }
 
     @KafkaListener(topics = OrderTopic.COMPLETED, groupId = "order-group",
             containerFactory = "paymentCompletedFactory")
-    public void paymentCompleted(PaymentCompletedEvent event) {
+    public void paymentCompleted(PaymentCompletedEvent event, Acknowledgment acknowledgment) {
         orderService.updateByPaymentCompleted(event.data().orderId());
+
+        acknowledgment.acknowledge();
     }
 
     @KafkaListener(topics = PaymentTopic.CANCELED, groupId = "order-group",
             containerFactory = "paymentCanceledFactory")
-    public void paymentCanceled(PaymentCanceledEvent event) {
+    public void paymentCanceled(PaymentCanceledEvent event, Acknowledgment acknowledgment) {
         orderService.updateByPaymentCanceled(event.data().orderId());
+
+        acknowledgment.acknowledge();
     }
 
 }
