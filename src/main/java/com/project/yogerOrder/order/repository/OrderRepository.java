@@ -1,7 +1,7 @@
 package com.project.yogerOrder.order.repository;
 
 import com.project.yogerOrder.order.entity.OrderEntity;
-import com.project.yogerOrder.order.entity.OrderState;
+import com.project.yogerOrder.order.util.stateMachine.OrderState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

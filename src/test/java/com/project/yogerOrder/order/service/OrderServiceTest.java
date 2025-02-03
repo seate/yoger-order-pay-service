@@ -3,7 +3,7 @@ package com.project.yogerOrder.order.service;
 import com.project.yogerOrder.order.config.OrderConfig;
 import com.project.yogerOrder.order.dto.request.OrderRequestDTO;
 import com.project.yogerOrder.order.entity.OrderEntity;
-import com.project.yogerOrder.order.entity.OrderState;
+import com.project.yogerOrder.order.util.stateMachine.OrderState;
 import com.project.yogerOrder.order.exception.OrderRepositoryException;
 import com.project.yogerOrder.order.repository.OrderRepository;
 import com.project.yogerOrder.product.service.ProductService;

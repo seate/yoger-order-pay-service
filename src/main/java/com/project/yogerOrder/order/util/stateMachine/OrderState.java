@@ -1,4 +1,4 @@
-package com.project.yogerOrder.order.entity;
+package com.project.yogerOrder.order.util.stateMachine;
 
 import java.util.List;
 
@@ -11,6 +11,10 @@ public enum OrderState {
 
     public static Boolean isStockOccupied(OrderState state) {
         return state == STOCK_CONFIRMED || state == COMPLETED;
+    }
+
+    public static Boolean isPaymentCompleted(OrderState state) {
+        return state == PAYMENT_COMPLETED || state == COMPLETED;
     }
 
 }
